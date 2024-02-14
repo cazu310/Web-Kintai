@@ -1,0 +1,23 @@
+<h1>ユーザー一覧</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <!-- 他のカラムも追加 -->
+    </tr>
+  </thead>
+  <tbody>
+    <% @employees.each do |employee| %>
+      <tr>
+        <td><%= employee.name %></td>
+        <td><%= employee.email %></td>
+        <!-- 他のカラムも追加 -->
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<%= link_to 'ログインへ', new_session_path, method: :get %>

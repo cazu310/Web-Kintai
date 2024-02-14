@@ -1,0 +1,78 @@
+<!-- app/views/employees/show.html.erb -->
+<%= button_to 'ログアウト', logout_path, method: :delete %>
+<h1>ようこそ <%= @employee.name %></h1>
+<p>属性: <%= @employee.position.name %></p>
+<p>時給: <%= @employee.position.hourly_rate %></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>項目</th>
+      <th>入力/記録</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- 出勤ボタン -->
+    <tr>
+      <td>出勤</td>
+      <td><%= button_to '出勤', attendances_path, method: :post, params: { action_type: 'start', employee_id: @employee.id } %></td>
+    </tr>
+
+    <!-- 退勤ボタン -->
+    <tr>
+      <td>退勤</td>
+      <td><%= button_to '退勤', update_attendance_employee_path(@employee), method: :put %></td>
+    </tr>
+
+    <!-- 出社時間 -->
+    <tr>
+      <td>出社時間</td>
+      <td>
+        <% if @employee.attendance_records.last.present? %>
+          <%= @employee.attendance_records.last.clock_in_time.strftime('%H:%M:%S') %>
+        <% else %>
+          未出社
+        <% end %>
+      </td>
+    </tr>
+
+    <!-- 退社時間 -->
+    <tr>
+      <td>退社時間</td>
+      <td>
+        <% if @employee.attendance_records.last.present? && @employee.attendance_records.last.clock_out_time.present? %>
+          <%= @employee.attendance_records.last.clock_out_time.strftime('%H:%M:%S') %>
+        <% else %>
+          未退社
+        <% end %>
+      </td>
+    </tr>
+
+    <!-- 労働時間 -->
+    <tr>
+      <td>労働時間</td>
+      <td>
+        <% if @employee.attendance_records.last.present? && @employee.attendance_records.last.clock_out_time.present? %>
+          <% working_minutes = @employee.attendance_records.last.calculate_working_hours[:hours] * 60 + @employee.attendance_records.last.calculate_working_hours[:minutes] %>
+          <%= "%02d時間%02d分" % [working_minutes / 60, working_minutes % 60] %>
+        <% else %>
+          未計算
+        <% end %>
+      </td>
+    </tr>
+
+    <!-- 給与 -->
+    <tr>
+      <td>給与</td>
+      <td>
+        <% if @employee.attendance_records.last.present? && @employee.attendance_records.last.clock_out_time.present? %>
+          <%= @employee.attendance_records.last.calculate_salary(@employee.hourly_wage) %> 円
+        <% else %>
+          未計算
+        <% end %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<%= link_to '給与明細', salary_statement_employee_path(@employee), method: :get %>

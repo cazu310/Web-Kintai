@@ -1,0 +1,3 @@
+.form-error {
+  border-color: red; /* エラー時のボーダー色を赤に設定 */
+}

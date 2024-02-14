@@ -1,0 +1,21 @@
+<h1>ログイン</h1>
+
+<%= form_with(model: @session || Session.new, url: sessions_path) do |f| %>
+  <%= f.label :login_id %>
+  <%= f.text_field :login_id, class: @session&.errors&.[](:login_id).present? ? 'form-error' : nil %>
+
+  <%= f.label :password %>
+  <%= f.password_field :password, class: @session&.errors&.[](:password).present? ? 'form-error' : nil %>
+
+  <%= f.submit 'Log in' %>
+<% end %>
+
+
+<%= link_to '新規登録へ', new_employee_path, method: :get %>
+
+
+<% if @errorMessage %>
+  <div class="alert alert-danger">
+    <%= @errorMessage %>
+  </div>
+<% end %>

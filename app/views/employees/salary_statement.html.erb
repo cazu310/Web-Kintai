@@ -1,0 +1,7 @@
+<!-- app/views/employees/salary_statement.html.erb -->
+
+<h1>給与明細</h1>
+
+<%= render partial: 'shared/salary_details', locals: { total_working_hours: @total_working_hours, hourly_wage: @hourly_wage, total_salary: @total_salary } %>
+
+<%= link_to '戻る', employee_path(@employee) %>

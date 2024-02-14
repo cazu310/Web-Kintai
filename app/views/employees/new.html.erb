@@ -1,0 +1,32 @@
+<!-- app/views/employees/new.html.erb -->
+
+<h1>新規従業員登録</h1>
+<%= form_with(model: @employee, url: employees_path, method: :post) do |form| %>
+  <p>名前</p>
+  <% form.label :name %>
+  <%= form.text_field :name %>
+
+  <p>メールアドレス</p>
+  <% form.label :email %>
+  <%= form.text_field :email %>
+
+  <p>ログインID</p>
+  <% form.label :login_id %>
+  <%= form.text_field :login_id %>
+
+  <p>パスワード</p>
+  <% form.label :password %>
+  <%= form.password_field :password %>
+
+  <p>雇用形態</p>
+  <% form.label :position %>
+  <%= form.collection_select :position_id, Position.all, :id, :name %>
+
+  <p>振込先番号</p>
+  <% form.label :bank_account %>
+  <%= form.text_field :bank_account %>
+
+  <%= form.submit "従業員の作成" %>
+<% end %>
+
+<%= link_to "一覧へ", employees_path, class: "btn btn-primary" %>
